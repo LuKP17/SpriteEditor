@@ -5,14 +5,12 @@
 
 #include "AppData.h"
 
-#define GRID_SIZE 16 // FIXME taille plus grande crash (probleme de memoire)
+#define GRID_SIZE 32
 
 struct SpriteGridFrame : public uiFrame
 {
 	AppData *appData;
-	RGB888 activeCol;
-	uint16_t gridButtonSize;
-	uiButton *gridButtons[GRID_SIZE][GRID_SIZE];
+	uiPaintBox *paintBox;
 
 	SpriteGridFrame(uiFrame * parent, AppData *appData)
 	: uiFrame(parent, "", Point(0, 0), Size(480, 480), true)
@@ -20,38 +18,32 @@ struct SpriteGridFrame : public uiFrame
 		frameStyle().backgroundColor = RGB888(255, 255, 255);
 		windowStyle().borderSize	 = 0;
 		frameProps().resizeable		 = false;
+
+		paintBox = new uiPaintBox(this, clientPos(), clientSize());
+		paintBox->anchors().right = true;
+		paintBox->anchors().bottom = true;
+		paintBox->onPaint = [&](Rect const & r) { onPaintPaintBox(r); };
+
+		paintBox->repaint(); // TEST I guess this calls onPaintPaintBox()
+
 		this->appData = appData;
-		gridButtonSize = 480 / GRID_SIZE;
-		for (int i = 0; i < GRID_SIZE; i++) {
-			for (int j = 0; j < GRID_SIZE; j++) {
-				gridButtons[i][j] = new uiButton(
-					this,
-					"",
-					Point(i*gridButtonSize, j*gridButtonSize),
-					Size(gridButtonSize, gridButtonSize)
-				);
-				gridButtons[i][j]->buttonStyle().backgroundColor = Color::BrightWhite;
-				gridButtons[i][j]->buttonStyle().downBackgroundColor = Color::BrightWhite;
-				gridButtons[i][j]->buttonStyle().mouseDownBackgroundColor = Color::BrightWhite;
-				gridButtons[i][j]->buttonStyle().mouseOverBackgroundColor = Color::BrightWhite;
-				gridButtons[i][j]->onClick = [&]() { onGridButtonClick(); };
-			}
-		}
 	}
 
-	void onGridButtonClick() {
-		MouseStatus mouseStatus = app()->mouse()->status();
-		int i = mouseStatus.X / gridButtonSize;
-		int j = mouseStatus.Y / gridButtonSize;
-		gridButtons[i][j]->buttonStyle().backgroundColor = appData->activeCol;
+	void onPaintPaintBox(Rect const & r)
+	{
+		/* Perform custom drawings */
+
+		int w = r.width(), h = r.height();
+
+		auto cv = canvas();
+
+		// TEST I hope the sprite grid will be red
+		cv->setPenColor(Color::BrightRed);
+		cv->fillRectangle(r)
 	}
 
 	void clear()
 	{
-		for (int i = 0; i < GRID_SIZE; i++) {
-			for (int j = 0; j < GRID_SIZE; j++) {
-				gridButtons[i][j]->buttonStyle().backgroundColor = Color::BrightWhite;
-			}
-		}
+		return;
 	}
 };
