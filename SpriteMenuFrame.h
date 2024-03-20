@@ -11,7 +11,7 @@ struct SpriteMenuFrame : public uiFrame
 	SpriteGridFrame *spriteGridFrame;
 	uiLabel *titleLabel;
 	uiTextEdit *spriteNameEdit;
-	uiButton *clearButton;
+	uiButton *exportButton, *clearButton;
 	
 	SpriteMenuFrame(uiFrame * parent, AppData *appData, SpriteGridFrame *spriteGridFrame)
 	: uiFrame(parent, "", Point(480, 160), Size(160, 320), true)
@@ -27,8 +27,15 @@ struct SpriteMenuFrame : public uiFrame
 		titleLabel->labelStyle().textFont = &fabgl::FONT_std_24;
 		titleLabel->update();
 		
-		clearButton = new uiButton(this, "Clear Sprite", Point(10, 100), Size(100, 20));
+		exportButton = new uiButton(this, "Export Sprite", Point(10, 100), Size(100, 20));
+		exportButton->onClick = [&]() { onExportButtonClick(); };
+		clearButton = new uiButton(this, "Clear Sprite", Point(10, 150), Size(100, 20));
 		clearButton->onClick = [&]() { onClearButtonClick(); };
+	}
+
+	void onExportButtonClick()
+	{
+		SerialBT.write("abcd", 4); // TEST "abcd" should be printed on my phone
 	}
 
 	void onClearButtonClick()

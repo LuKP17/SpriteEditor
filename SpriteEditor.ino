@@ -5,6 +5,14 @@
 	If time, save the sprite in a .json file and send it via Bluetooth or Wi-Fi.
 */
 
+#include "BluetoothSerial.h"
+
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+#endif
+
+BluetoothSerial SerialBT;
+
 #include "fabgl.h"
 #include "fabui.h"
 
@@ -53,6 +61,7 @@ class MyApp : public uiApp
 void setup()
 {
 	Serial.begin(115200);
+	SerialBT.begin("ESP32-BT-Slave"); //Bluetooth device name
 	delay(500);  // avoid garbage into the UART
 	Serial.write("\n\nReset\n");
 
