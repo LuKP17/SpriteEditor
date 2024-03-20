@@ -25,10 +25,13 @@ fabgl::PS2Controller PS2Controller;
 class MyApp : public uiApp
 {
 	AppData *appData;
+	uiFrame *promptFrame;
+	uiButton *size8Button, *size12Button, *size16Button;
 	SpriteGridFrame *spriteGridFrame;
 	ColorPaletteFrame *colorPaletteFrame;
 	SpriteMenuFrame *spriteMenuFrame;
 
+	// FIXME NON UTILISEE POUR L'INSTANT
 	fabgl::Stack<uiFrame*> dynamicFrames;
 
 	void init()
@@ -46,6 +49,43 @@ class MyApp : public uiApp
 
 		// sprite menu frame
 		spriteMenuFrame = new SpriteMenuFrame(rootWindow(), appData, spriteGridFrame);
+
+		// prompt user for grid size
+		promptFrame = new uiFrame(rootWindow(), "Grid Size", Point(100, 100), Size(200, 200));
+    	promptFrame->frameStyle().backgroundColor = RGB888(255, 255, 255);
+		size8Button = new uiButton(promptFrame, "8", Point(50, 100), Size(20, 20));
+		size8Button->onClick = [&]() { onSize8ButtonClick(); };
+		size12Button = new uiButton(promptFrame, "12", Point(100, 100), Size(20, 20));
+		size12Button->onClick = [&]() { onSize12ButtonClick(); };
+		size16Button = new uiButton(promptFrame, "16", Point(150, 100), Size(20, 20));
+		size16Button->onClick = [&]() { onSize16ButtonClick(); };
+
+		showWindow(promptFrame, true);
+		setActiveWindow(promptFrame);
+	}
+
+	void onSize8ButtonClick()
+	{
+		appData->gridSize = 8;
+		// showWindow(promptFrame, false);
+		spriteGridFrame->repaint();
+		destroyWindow(promptFrame);
+	}
+
+	void onSize12ButtonClick()
+	{
+		appData->gridSize = 12;
+		// showWindow(promptFrame, false);
+		spriteGridFrame->repaint();
+		destroyWindow(promptFrame);
+	}
+
+	void onSize16ButtonClick()
+	{
+		appData->gridSize = 16;
+		// showWindow(promptFrame, false);
+		spriteGridFrame->repaint();
+		destroyWindow(promptFrame);
 	}
 };
 

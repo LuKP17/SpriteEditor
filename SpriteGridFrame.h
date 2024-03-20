@@ -5,14 +5,14 @@
 
 #include "AppData.h"
 
-#define GRID_SIZE 16 // FIXME taille plus grande crash (probleme de memoire)
+// SIMPLIFIED FOR TESTING MORE IMPORTANT STUFF, BUT A LOT OF MEMORY WASTED!
+#define MAX_GRID_SIZE 16
 
 struct SpriteGridFrame : public uiFrame
 {
 	AppData *appData;
-	RGB888 activeCol;
 	uint16_t gridButtonSize;
-	uiButton *gridButtons[GRID_SIZE][GRID_SIZE];
+	uiButton *gridButtons[MAX_GRID_SIZE][MAX_GRID_SIZE];
 
 	SpriteGridFrame(uiFrame * parent, AppData *appData)
 	: uiFrame(parent, "", Point(0, 0), Size(480, 480), true)
@@ -21,9 +21,9 @@ struct SpriteGridFrame : public uiFrame
 		windowStyle().borderSize	 = 0;
 		frameProps().resizeable		 = false;
 		this->appData = appData;
-		gridButtonSize = 480 / GRID_SIZE;
-		for (int i = 0; i < GRID_SIZE; i++) {
-			for (int j = 0; j < GRID_SIZE; j++) {
+		gridButtonSize = 480 / appData->gridSize;
+		for (int i = 0; i < appData->gridSize; i++) {
+			for (int j = 0; j < appData->gridSize; j++) {
 				gridButtons[i][j] = new uiButton(
 					this,
 					"",
@@ -48,8 +48,8 @@ struct SpriteGridFrame : public uiFrame
 
 	void clear()
 	{
-		for (int i = 0; i < GRID_SIZE; i++) {
-			for (int j = 0; j < GRID_SIZE; j++) {
+		for (int i = 0; i < appData->gridSize; i++) {
+			for (int j = 0; j < appData->gridSize; j++) {
 				gridButtons[i][j]->buttonStyle().backgroundColor = Color::BrightWhite;
 			}
 		}
