@@ -35,7 +35,7 @@ struct SpriteMenuFrame : public uiFrame
 
 	void onExportButtonClick()
 	{
-		SerialBT.write("abcd", 4); // TEST "abcd" should be printed on my phone
+		SerialBT.write((const uint8_t *)appData->spriteName, 7);
 	}
 
 	void onClearButtonClick()
