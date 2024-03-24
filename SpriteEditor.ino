@@ -29,10 +29,13 @@ class MyApp : public uiApp
 	ColorPaletteFrame *colorPaletteFrame;
 	SpriteMenuFrame *spriteMenuFrame;
 
+	uiColorListBox *colorPalette;
+
 	fabgl::Stack<uiFrame*> dynamicFrames;
 
 	void init()
 	{
+		Serial.printf("Hey hey!\n");
 		rootWindow()->frameStyle().backgroundColor = RGB888(255, 255, 255);
 
 		// init app data
@@ -42,10 +45,17 @@ class MyApp : public uiApp
 		spriteGridFrame = new SpriteGridFrame(rootWindow(), appData);
 
 		// color palette frame
-		colorPaletteFrame = new ColorPaletteFrame(rootWindow(), appData);
+		//colorPaletteFrame = new ColorPaletteFrame(rootWindow(), appData);
+		colorPalette = new uiColorListBox(rootWindow(), Point(480, 0), Size(160, 160));
+		colorPalette->onChange = [&]() { onColorPaletteChange(); };
 
 		// sprite menu frame
 		spriteMenuFrame = new SpriteMenuFrame(rootWindow(), appData, spriteGridFrame);
+	}
+
+	void onColorPaletteChange()
+	{
+		appData->activeCol = colorPalette->color();
 	}
 };
 
