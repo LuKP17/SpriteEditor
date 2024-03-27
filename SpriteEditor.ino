@@ -14,6 +14,9 @@
 #include "SpriteMenuFrame.h"
 
 fabgl::VGA16Controller DisplayController;
+// TODO To try if canvas or bitmap isn't drawn on screen
+// fabgl::VGAController VGAController;
+// fabgl::Canvas        canvas(&VGAController);
 fabgl::PS2Controller PS2Controller;
 
 /*
