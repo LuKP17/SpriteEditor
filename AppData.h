@@ -9,6 +9,8 @@
 struct AppData
 {
 	char *spriteName;
+	uint8_t spriteSize;
+	uint8_t cellSize;
 	uint8_t bitmapData[SPRITE_SIZE][SPRITE_SIZE];
 	Bitmap *spriteBitmap;
 	RGB888 activeCol;
@@ -16,16 +18,18 @@ struct AppData
 	AppData()
 	{
 		this->spriteName = "unnamed";
+		this->spriteSize = SPRITE_SIZE;
+		this->cellSize = 480 / SPRITE_SIZE;
 		this->activeCol = Color::BrightWhite;
 		this->spriteBitmap = new Bitmap(SPRITE_SIZE, SPRITE_SIZE, bitmapData, PixelFormat::RGBA2222);
-		for (int i = 0; i < SPRITE_SIZE; i++) {
-			for (int j = 0; j < SPRITE_SIZE; j++) {
-				if (j == SPRITE_SIZE / 2)
-					spriteBitmap->setPixel(i, j, RGBA2222(0, 0, 255, 255));
-				else
-					spriteBitmap->setPixel(i, j, RGBA2222(255, 0, 0, 255));
-				if (i == SPRITE_SIZE / 2 && j == SPRITE_SIZE / 2)
-					spriteBitmap->setPixel(i, j, RGBA2222(0, 255, 0, 255));
+		initSprite();
+	}
+
+	void initSprite(void)
+	{
+		for (int i = 0; i < spriteSize; i++) {
+			for (int j = 0; j < spriteSize; j++) {
+				spriteBitmap->setPixel(i, j, RGBA2222(255, 255, 255, 255));
 			}
 		}
 	}
