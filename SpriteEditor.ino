@@ -14,17 +14,9 @@
 #include "SpriteMenuFrame.h"
 
 fabgl::VGA16Controller DisplayController;
-// TODO To try if canvas or bitmap isn't drawn on screen
-// fabgl::VGAController VGAController;
-// fabgl::Canvas        canvas(&VGAController);
+fabgl::Canvas cv(&DisplayController);
 fabgl::PS2Controller PS2Controller;
 
-/*
- * Improvements:
- *
- * - take arguments for the screen resolution to make the UI adapt to screen sizes
- *
-*/
 class MyApp : public uiApp
 {
 	AppData *appData;
@@ -32,10 +24,14 @@ class MyApp : public uiApp
 	ColorPaletteFrame *colorPaletteFrame;
 	SpriteMenuFrame *spriteMenuFrame;
 
+	uiFrame *promptFrame;
+	uiButton *size8Button, *size12Button, *size16Button;
+
 	fabgl::Stack<uiFrame*> dynamicFrames;
 
 	void init()
 	{
+		Serial.printf("Hey hey!\n");
 		rootWindow()->frameStyle().backgroundColor = RGB888(255, 255, 255);
 
 		// init app data
