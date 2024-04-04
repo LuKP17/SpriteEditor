@@ -48,8 +48,9 @@ struct SpriteGridFrame : public uiFrame
 
 	void repaintGrid()
 	{
-		// draw sprite
 		auto cv = canvas();
+
+		// fill cells
 		uint8_t r, g, b;
 		for (int i = 0; i < appData->spriteSize; i++) {
 			for (int j = 0; j < appData->spriteSize; j++) {				
@@ -62,8 +63,15 @@ struct SpriteGridFrame : public uiFrame
 			}
 		}
 
-		// draw grid on top
-		// TODO
+		cv->setBrushColor(0, 0, 0);
+		// draw horizontal grid lines
+		for (int i = 0; i < appData->spriteSize; i++) {
+			cv->drawLine(0, i * appData->cellSize - 1, (appData->spriteSize - 1) * appData->cellSize, i * appData->cellSize + 1);
+		}
+		// draw vertical grid lines
+		for (int j = 0; j < appData->spriteSize; j++) {
+			cv->drawLine(j * appData->cellSize - 1, 0, j * appData->cellSize + 1, (appData->spriteSize - 1) * appData->cellSize);
+		}
 	}
 
 	void clear()
