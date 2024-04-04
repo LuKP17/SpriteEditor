@@ -49,13 +49,15 @@ struct SpriteGridFrame : public uiFrame
 	void repaintGrid()
 	{
 		// draw sprite
-		// USE DRAWRECTANGLES INSTEAD, NOT ENOUGH MEMORY FOR THE BITMAP TO TAKE THE WHOLE 480*480 GRID FRAME
-		RGBA2222 col;
 		auto cv = canvas();
+		uint8_t r, g, b;
 		for (int i = 0; i < appData->spriteSize; i++) {
-			for (int j = 0; j < appData->spriteSize; j++) {
-				col = (RGBA2222)appData->bitmapData[i][j];
-				cv->setBrushColor(RGB888(col.R, col.G, col.B));
+			for (int j = 0; j < appData->spriteSize; j++) {				
+				r = ((RGBA2222*)appData->spriteBitmap->data)[i * appData->spriteBitmap->height + j].R;
+				g = ((RGBA2222*)appData->spriteBitmap->data)[i * appData->spriteBitmap->height + j].G;
+				b = ((RGBA2222*)appData->spriteBitmap->data)[i * appData->spriteBitmap->height + j].B;
+				cv->setBrushColor(r, g, b);
+				// required by low memory
 				cv->fillRectangle(i * appData->cellSize, j * appData->cellSize, (i+1) * appData->cellSize, (j+1) * appData->cellSize);
 			}
 		}
