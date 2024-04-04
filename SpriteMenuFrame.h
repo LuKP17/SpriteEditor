@@ -36,6 +36,19 @@ struct SpriteMenuFrame : public uiFrame
 	void onExportButtonClick()
 	{
 		SerialBT.write("abcd", 4); // TEST "abcd" should be printed on my phone
+
+		// Now let's send the hardcoded string of a .pbm file to visualize the sprite in GIMP.
+		// Possible for the contents to be stored in a single line.
+		// But might be easier in code to send the data by value.
+
+		// BEGIN FILE
+		// P3 SPRITE_SIZE SPRITE_SIZE 255
+		// R G B (uint_8t, uint8_t, uint8_t)
+		// R G B
+		// ...
+		// R G B
+		// END FILE
+		Serial.write("P3 4 4 255 0 0 0 255 0 0 0 255 0 255 255 0 0 0 255 255 0 255 0 255 255 255 255 255 0 0 0 255 0 0 0 255 0 255 255 0 0 0 255 255 0 255 0 255 255 255 255 255", 154);
 	}
 
 	void onClearButtonClick()
