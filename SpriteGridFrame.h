@@ -73,8 +73,4 @@ struct SpriteGridFrame : public uiFrame
 			cv->drawLine(j * appData->cellSize - 1, 0, j * appData->cellSize + 1, (appData->spriteSize - 1) * appData->cellSize);
 		}
 	}
-
-	void clear()
-	{
-	}
 };

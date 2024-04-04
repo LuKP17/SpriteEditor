@@ -33,7 +33,8 @@ struct SpriteMenuFrame : public uiFrame
 
 	void onClearButtonClick()
 	{
-		spriteGridFrame->clear();
+		appData->initSprite();
+		spriteGridFrame->repaintGrid();
 		spriteGridFrame->repaint();
 	}
 };
