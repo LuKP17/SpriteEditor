@@ -11,10 +11,10 @@ struct SpriteMenuFrame : public uiFrame
 	SpriteGridFrame *spriteGridFrame;
 	uiLabel *titleLabel;
 	uiTextEdit *spriteNameEdit;
-	uiButton *clearButton;
+	uiButton *exportBluetoothButton, *exportConsoleButton, *clearButton;
 	
 	SpriteMenuFrame(uiFrame * parent, AppData *appData, SpriteGridFrame *spriteGridFrame)
-	: uiFrame(parent, "", Point(480, 160), Size(160, 320), true)
+	: uiFrame(parent, "", Point(200, 40), Size(120, 280), true)
 	{
 		frameStyle().backgroundColor = RGB888(255, 255, 255);
 		windowStyle().borderSize     = 0;
@@ -22,18 +22,33 @@ struct SpriteMenuFrame : public uiFrame
 		this->appData = appData;
 		this->spriteGridFrame = spriteGridFrame;
 
-		titleLabel = new uiLabel(this, "Sprite Editor", Point(10,  33), Size(150, 20));
+		titleLabel = new uiLabel(this, "Sprite Editor", Point(5,  33), Size(115, 20));
 		titleLabel->labelStyle().backgroundColor = frameStyle().backgroundColor;
-		titleLabel->labelStyle().textFont = &fabgl::FONT_std_24;
+		titleLabel->labelStyle().textFont = &fabgl::FONT_std_22;
 		titleLabel->update();
 		
-		clearButton = new uiButton(this, "Clear Sprite", Point(10, 100), Size(100, 20));
+		exportBluetoothButton = new uiButton(this, "Export Bluetooth", Point(10, 60), Size(100, 20));
+		exportBluetoothButton->onClick = [&]() { onExportBluetoothButtonClick(); };
+		exportConsoleButton = new uiButton(this, "Export Console", Point(10, 90), Size(100, 20));
+		exportConsoleButton->onClick = [&]() { onExportConsoleButtonClick(); };
+		clearButton = new uiButton(this, "Clear Sprite", Point(10, 120), Size(100, 20));
 		clearButton->onClick = [&]() { onClearButtonClick(); };
+	}
+
+	void onExportBluetoothButtonClick()
+	{
+		SerialBT.write((const uint8_t *)appData->spriteName, 7);
+	}
+
+	void onExportConsoleButtonClick()
+	{
+		// bunch of Serial.printf to avoid having big buffers
+		Serial.printf("Hey hey!\n");
 	}
 
 	void onClearButtonClick()
 	{
-		spriteGridFrame->clear();
+		appData->initSprite();
 		spriteGridFrame->repaint();
 	}
 };

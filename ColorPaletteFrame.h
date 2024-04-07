@@ -15,15 +15,15 @@ struct ColorPaletteFrame : public uiFrame
 	uiButton *paletteButtons[NUM_COLORS / BUTTONS_PER_ROW][BUTTONS_PER_ROW];
 
 	ColorPaletteFrame(uiFrame * parent, AppData *appData)
-	: uiFrame(parent, "", Point(480, 0), Size(160, 160), true)
+	: uiFrame(parent, "", Point(200, 0), Size(120, 40), true)
 	{
 		frameStyle().backgroundColor = RGB888(255, 0, 0);
 		windowStyle().borderSize     = 0;
 		frameProps().resizeable		 = false;
 		this->appData = appData;
 
-		paletteButtonSizeX = 160 / BUTTONS_PER_ROW;
-		paletteButtonSizeY = 160 / (NUM_COLORS / BUTTONS_PER_ROW);
+		paletteButtonSizeX = 120 / BUTTONS_PER_ROW;
+		paletteButtonSizeY = 40 / (NUM_COLORS / BUTTONS_PER_ROW);
 		int colorNum;
 		for (int i = 0; i < NUM_COLORS / BUTTONS_PER_ROW; i++) {
 			for (int j = 0; j < BUTTONS_PER_ROW; j++) {
@@ -47,7 +47,7 @@ struct ColorPaletteFrame : public uiFrame
 
 	void onPaletteButtonClick() {
 		MouseStatus mouseStatus = app()->mouse()->status();
-		int j = (mouseStatus.X - 480) / paletteButtonSizeX; // substract sprite grid size
+		int j = (mouseStatus.X - 200) / paletteButtonSizeX; // substract sprite grid size
 		int i = mouseStatus.Y / paletteButtonSizeY;
 		appData->activeCol = paletteButtons[i][j]->buttonStyle().backgroundColor;
 	}
