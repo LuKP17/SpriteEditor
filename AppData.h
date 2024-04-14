@@ -17,7 +17,7 @@ struct AppData
 
 	AppData()
 	{
-		this->spriteName = "unnamed";
+		this->spriteName = "unnamed\n";
 		this->spriteSize = SPRITE_SIZE;
 		this->cellSize = 200 / SPRITE_SIZE;
 		this->activeCol = Color::BrightWhite;

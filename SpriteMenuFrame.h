@@ -22,7 +22,7 @@ struct SpriteMenuFrame : public uiFrame
 		this->appData = appData;
 		this->spriteGridFrame = spriteGridFrame;
 
-		titleLabel = new uiLabel(this, "Sprite Editor", Point(5,  33), Size(115, 20));
+		titleLabel = new uiLabel(this, "Sprite Editor", Point(5,  10), Size(115, 20));
 		titleLabel->labelStyle().backgroundColor = frameStyle().backgroundColor;
 		titleLabel->labelStyle().textFont = &fabgl::FONT_std_22;
 		titleLabel->update();
@@ -37,13 +37,40 @@ struct SpriteMenuFrame : public uiFrame
 
 	void onExportBluetoothButtonClick()
 	{
-		SerialBT.write((const uint8_t *)appData->spriteName, 7);
+		SerialBT.printf("P3 %d %d 255\n", appData->spriteSize, appData->spriteSize);
+
+		uint8_t rgb[3];
+		for (int i = 0; i < appData->spriteSize; i++) {
+			for (int j = 0; j < appData->spriteSize; j++) {				
+				rgb[0] = ((RGBA2222*)appData->spriteBitmap->data)[i * appData->spriteBitmap->width + j].R;
+				rgb[1] = ((RGBA2222*)appData->spriteBitmap->data)[i * appData->spriteBitmap->width + j].G;
+				rgb[2] = ((RGBA2222*)appData->spriteBitmap->data)[i * appData->spriteBitmap->width + j].B;
+				for (int c = 0; c < 3; c++) {
+					if (rgb[c] == 3) rgb[c] = 255;
+				}
+				SerialBT.printf("%d %d %d ", rgb[0], rgb[1], rgb[2]);
+			}
+		}
+
+		SerialBT.println();
 	}
 
 	void onExportConsoleButtonClick()
 	{
-		// bunch of Serial.printf to avoid having big buffers
-		Serial.printf("Hey hey!\n");
+		Serial.printf("P3 %d %d 255\n", appData->spriteSize, appData->spriteSize);
+
+		uint8_t rgb[3];
+		for (int i = 0; i < appData->spriteSize; i++) {
+			for (int j = 0; j < appData->spriteSize; j++) {				
+				rgb[0] = ((RGBA2222*)appData->spriteBitmap->data)[i * appData->spriteBitmap->width + j].R;
+				rgb[1] = ((RGBA2222*)appData->spriteBitmap->data)[i * appData->spriteBitmap->width + j].G;
+				rgb[2] = ((RGBA2222*)appData->spriteBitmap->data)[i * appData->spriteBitmap->width + j].B;
+				for (int c = 0; c < 3; c++) {
+					if (rgb[c] == 3) rgb[c] = 255;
+				}
+				Serial.printf("%d %d %d ", rgb[0], rgb[1], rgb[2]);
+			}
+		}
 	}
 
 	void onClearButtonClick()

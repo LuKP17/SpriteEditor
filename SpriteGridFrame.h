@@ -39,7 +39,7 @@ struct SpriteGridFrame : public uiFrame
 			// compute sprite pixel
 			Serial.printf("Clicked registered at cell (%d, %d)\n", status.X / appData->cellSize, status.Y / appData->cellSize);
 			// update bitmap
-			appData->spriteBitmap->setPixel(status.Y / appData->cellSize, status.X / appData->cellSize, RGBA2222(appData->activeCol.R, appData->activeCol.G, appData->activeCol.B, 255));
+			appData->spriteBitmap->setPixel(status.X / appData->cellSize, status.Y / appData->cellSize, RGBA2222(appData->activeCol.R, appData->activeCol.G, appData->activeCol.B, 255));
 		}
 		repaintGrid();
 	}
@@ -53,15 +53,15 @@ struct SpriteGridFrame : public uiFrame
 		uint8_t rgb[3];
 		for (int i = 0; i < appData->spriteSize; i++) {
 			for (int j = 0; j < appData->spriteSize; j++) {				
-				rgb[0] = ((RGBA2222*)appData->spriteBitmap->data)[i * appData->spriteBitmap->height + j].R;
-				rgb[1] = ((RGBA2222*)appData->spriteBitmap->data)[i * appData->spriteBitmap->height + j].G;
-				rgb[2] = ((RGBA2222*)appData->spriteBitmap->data)[i * appData->spriteBitmap->height + j].B;
+				rgb[0] = ((RGBA2222*)appData->spriteBitmap->data)[i * appData->spriteBitmap->width + j].R;
+				rgb[1] = ((RGBA2222*)appData->spriteBitmap->data)[i * appData->spriteBitmap->width + j].G;
+				rgb[2] = ((RGBA2222*)appData->spriteBitmap->data)[i * appData->spriteBitmap->width + j].B;
 				for (int c = 0; c < 3; c++) {
 					if (rgb[c] == 3) rgb[c] = 255;
 				}
 				cv->setBrushColor(rgb[0], rgb[1], rgb[2]);
 				// required by low memory
-				cv->fillRectangle(i * appData->cellSize, j * appData->cellSize, (i+1) * appData->cellSize, (j+1) * appData->cellSize);
+				cv->fillRectangle(j * appData->cellSize, i * appData->cellSize, (j+1) * appData->cellSize, (i+1) * appData->cellSize);
 			}
 		}
 
